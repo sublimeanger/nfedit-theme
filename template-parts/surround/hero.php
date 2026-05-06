@@ -11,19 +11,24 @@ $areas   = get_the_terms($post_id, 'area_taxonomy');
 $kind    = (!is_wp_error($kinds) && !empty($kinds)) ? $kinds[0] : null;
 $area    = (!is_wp_error($areas) && !empty($areas)) ? $areas[0] : null;
 
-$img_url    = is_array($image) && !empty($image['url']) ? $image['url'] : '';
-$img_alt    = is_array($image) && !empty($image['alt']) ? $image['alt'] : get_the_title($post_id);
-$img_w      = is_array($image) && !empty($image['width'])  ? (int) $image['width']  : 1600;
-$img_h      = is_array($image) && !empty($image['height']) ? (int) $image['height'] : 900;
+// Image: ACF returns array (return_format=array) or attachment ID. Resolve to ID.
+$img_id  = 0;
+if (is_array($image) && !empty($image['ID'])) {
+    $img_id = (int) $image['ID'];
+} elseif (is_numeric($image)) {
+    $img_id = (int) $image;
+}
+if (!$img_id) $img_id = (int) get_post_thumbnail_id($post_id);
+$img_alt = (is_array($image) && !empty($image['alt'])) ? $image['alt'] : get_the_title($post_id);
 ?>
 <header class="nfedit-surround__hero">
-    <?php if ($img_url): ?>
+    <?php if ($img_id): ?>
         <div class="nfedit-surround__hero-image">
-            <img src="<?php echo esc_url($img_url); ?>"
-                 alt="<?php echo esc_attr($img_alt); ?>"
-                 loading="eager"
-                 width="<?php echo esc_attr($img_w); ?>"
-                 height="<?php echo esc_attr($img_h); ?>">
+            <?php echo wp_get_attachment_image($img_id, 'nfedit_hero_xl', false, [
+                'alt'           => $img_alt,
+                'loading'       => 'eager',
+                'fetchpriority' => 'high',
+            ]); ?>
         </div>
     <?php endif; ?>
     <div class="container-edit nfedit-surround__hero-text">

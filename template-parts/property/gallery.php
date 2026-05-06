@@ -30,12 +30,15 @@ foreach ($gallery as $att) {
             <?php foreach ($visible as $i => $att):
                 $att_id = is_array($att) ? (isset($att['ID']) ? (int) $att['ID'] : 0) : (int) $att;
                 if (!$att_id) continue;
-                $thumb = wp_get_attachment_image_url($att_id, 'nfedit_gallery_4_3');
                 $alt   = (string) get_post_meta($att_id, '_wp_attachment_image_alt', true);
                 if (!$alt) $alt = get_the_title($post_id) . ' — image ' . ($i + 1);
             ?>
                 <button class="nfedit-property-gallery__item" data-gallery-index="<?php echo (int) $i; ?>" type="button" aria-label="Open image <?php echo (int) $i + 1; ?>">
-                    <img src="<?php echo esc_url($thumb); ?>" alt="<?php echo esc_attr($alt); ?>" loading="lazy" class="img-muted" />
+                    <?php echo wp_get_attachment_image($att_id, 'nfedit_gallery_4_3', false, [
+                        'alt'     => $alt,
+                        'loading' => 'lazy',
+                        'class'   => 'img-muted',
+                    ]); ?>
                 </button>
             <?php endforeach; ?>
         </div>

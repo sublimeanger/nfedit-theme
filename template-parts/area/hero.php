@@ -9,7 +9,6 @@ $post_id = (int) $args['post_id'];
 $hero_id = get_field('hero_image', $post_id);
 $hero_id = is_array($hero_id) ? (isset($hero_id['ID']) ? (int) $hero_id['ID'] : 0) : (int) $hero_id;
 if (!$hero_id) $hero_id = (int) get_post_thumbnail_id($post_id);
-$hero_url = $hero_id ? wp_get_attachment_image_url($hero_id, 'nfedit_hero_xl') : '';
 
 $kind = (string) get_field('kind', $post_id);
 
@@ -33,8 +32,13 @@ if (!$count) {
 }
 ?>
 <section class="nfedit-area-hero">
-    <?php if ($hero_url): ?>
-        <img src="<?php echo esc_url($hero_url); ?>" alt="<?php echo esc_attr(get_the_title($post_id)); ?>" class="nfedit-area-hero__image" />
+    <?php if ($hero_id): ?>
+        <?php echo wp_get_attachment_image($hero_id, 'nfedit_hero_xl', false, [
+            'alt'           => get_the_title($post_id),
+            'class'         => 'nfedit-area-hero__image',
+            'loading'       => 'eager',
+            'fetchpriority' => 'high',
+        ]); ?>
     <?php endif; ?>
     <div class="nfedit-area-hero__gradient"></div>
     <div class="container-edit nfedit-area-hero__caption">

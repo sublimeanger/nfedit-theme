@@ -14,7 +14,6 @@ $img_id = get_field('hero_image', $pid);
 $img_id = is_array($img_id) ? (isset($img_id['ID']) ? (int) $img_id['ID'] : 0) : (int) $img_id;
 if (!$img_id) $img_id = (int) get_post_thumbnail_id($pid);
 $size   = $aspect === 'portrait' ? 'nfedit_card_4_5' : 'nfedit_card_16_9';
-$img_url = $img_id ? wp_get_attachment_image_url($img_id, $size) : '';
 
 $dek = (string) get_field('dek', $pid);
 if (!$dek) $dek = get_the_excerpt($pid);
@@ -29,8 +28,12 @@ $size_class   = $large ? 'nfedit-editorial-card--large' : 'nfedit-editorial-card
 ?>
 <a href="<?php echo esc_url(get_permalink($pid)); ?>" class="nfedit-editorial-card <?php echo esc_attr("$aspect_class $size_class"); ?>">
     <div class="nfedit-editorial-card__media">
-        <?php if ($img_url): ?>
-            <img src="<?php echo esc_url($img_url); ?>" alt="<?php echo esc_attr(get_the_title($pid)); ?>" loading="lazy" class="img-muted" />
+        <?php if ($img_id): ?>
+            <?php echo wp_get_attachment_image($img_id, $size, false, [
+                'alt'     => get_the_title($pid),
+                'loading' => 'lazy',
+                'class'   => 'img-muted',
+            ]); ?>
         <?php endif; ?>
     </div>
     <div class="nfedit-editorial-card__body">

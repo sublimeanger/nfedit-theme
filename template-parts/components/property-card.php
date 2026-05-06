@@ -16,7 +16,13 @@ $variant_class = 'nfedit-property-card--' . $variant;
 ?>
 <a href="<?php echo esc_url($data['permalink']); ?>" class="nfedit-property-card <?php echo esc_attr($variant_class); ?>">
     <div class="nfedit-property-card__media">
-        <?php if (!empty($data['image'])): ?>
+        <?php if (!empty($data['image_id'])): ?>
+            <?php echo wp_get_attachment_image((int) $data['image_id'], 'nfedit_card_4_3', false, [
+                'alt'     => $data['name'],
+                'loading' => 'lazy',
+                'class'   => 'img-muted',
+            ]); ?>
+        <?php elseif (!empty($data['image'])): ?>
             <img src="<?php echo esc_url($data['image']); ?>" alt="<?php echo esc_attr($data['name']); ?>" loading="lazy" class="img-muted" />
         <?php endif; ?>
     </div>

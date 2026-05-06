@@ -23,7 +23,7 @@ if ($last_upd) {
 $hero_id = get_field('hero_image', $post_id);
 if (is_array($hero_id) && isset($hero_id['ID'])) $hero_id = $hero_id['ID'];
 if (!$hero_id) $hero_id = get_post_thumbnail_id($post_id);
-$hero_url = $hero_id ? wp_get_attachment_image_url($hero_id, 'nfedit_hero_xl') : '';
+$hero_id = (int) $hero_id;
 
 // Category
 $cats = get_the_terms($post_id, 'guide_category');
@@ -44,7 +44,7 @@ get_header(); ?>
     <?php
     get_template_part('template-parts/guide/hero', null, [
         'post_id'          => $post_id,
-        'hero_url'         => $hero_url,
+        'hero_id'          => $hero_id,
         'category'         => $cat_label,
         'dek'              => $dek,
         'read_min'         => $read_min,

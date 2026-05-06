@@ -25,8 +25,6 @@ if (!$hero_id) {
         }
     }
 }
-$hero_url = $hero_id ? wp_get_attachment_image_url($hero_id, 'nfedit_hero_xl') : '';
-
 $eyebrow  = function_exists('get_field') ? (string) get_field('hero_eyebrow', 'option') : '';
 if (!$eyebrow)  $eyebrow  = 'The New Forest Edit';
 $headline = function_exists('get_field') ? (string) get_field('hero_h1', 'option') : '';
@@ -35,8 +33,13 @@ $dek      = function_exists('get_field') ? (string) get_field('hero_sub', 'optio
 if (!$dek)      $dek      = "A curated guide to the New Forest's best cottages, places to walk, and pubs to find your way to. By Jamie & Lauren.";
 ?>
 <section class="nfedit-home-hero">
-    <?php if ($hero_url): ?>
-        <img src="<?php echo esc_url($hero_url); ?>" alt="The New Forest at golden hour" class="nfedit-home-hero__image" />
+    <?php if ($hero_id): ?>
+        <?php echo wp_get_attachment_image($hero_id, 'nfedit_hero_xl', false, [
+            'alt'           => 'The New Forest at golden hour',
+            'class'         => 'nfedit-home-hero__image',
+            'loading'       => 'eager',
+            'fetchpriority' => 'high',
+        ]); ?>
     <?php endif; ?>
     <div class="nfedit-home-hero__gradient"></div>
     <div class="container-edit nfedit-home-hero__content">

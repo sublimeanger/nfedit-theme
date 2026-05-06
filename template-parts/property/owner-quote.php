@@ -12,12 +12,15 @@ $name    = (string) get_field('owner_quote_name', $post_id);
 $role    = (string) get_field('owner_quote_role', $post_id);
 $portrait = get_field('owner_portrait', $post_id);
 $portrait_id = is_array($portrait) ? (isset($portrait['ID']) ? (int) $portrait['ID'] : 0) : (int) $portrait;
-$portrait_url = $portrait_id ? wp_get_attachment_image_url($portrait_id, 'nfedit_portrait') : '';
 ?>
 <section class="nfedit-property-owner-quote">
     <div class="container-edit nfedit-property-owner-quote__inner">
-        <?php if ($portrait_url): ?>
-            <img src="<?php echo esc_url($portrait_url); ?>" alt="<?php echo esc_attr($name); ?>" class="nfedit-property-owner-quote__portrait" />
+        <?php if ($portrait_id): ?>
+            <?php echo wp_get_attachment_image($portrait_id, 'nfedit_portrait', false, [
+                'alt'     => $name,
+                'loading' => 'lazy',
+                'class'   => 'nfedit-property-owner-quote__portrait',
+            ]); ?>
         <?php endif; ?>
         <blockquote class="nfedit-property-owner-quote__text">&ldquo;<?php echo esc_html($text); ?>&rdquo;</blockquote>
         <?php if ($name || $role): ?>

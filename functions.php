@@ -109,6 +109,31 @@ remove_action('wp_print_styles', 'print_emoji_styles');
 remove_action('admin_print_styles', 'print_emoji_styles');
 
 // ─────────────────────────────────────────────────────────────────────
+// Image upload housekeeping
+// Cap raw uploads at 2000px (was WP's 2560 default) so a 6000px Shutterstock
+// download lives on disk at the largest size we ever actually display.
+// ─────────────────────────────────────────────────────────────────────
+add_filter('big_image_size_threshold', function () {
+    return 2000;
+});
+
+// Drop unused intermediate sub-sizes — every upload was generating 16 variants,
+// 4 of which we never reference (medium_large = 768, 1536x1536, 2048x2048,
+// nfedit_gallery_full = 2400x1600 which exceeds the cap above).
+add_filter('intermediate_image_sizes', function ($sizes) {
+    return array_values(array_diff(
+        $sizes,
+        ['medium_large', '1536x1536', '2048x2048', 'nfedit_gallery_full']
+    ));
+});
+add_filter('intermediate_image_sizes_advanced', function ($new_sizes) {
+    foreach (['medium_large', '1536x1536', '2048x2048', 'nfedit_gallery_full'] as $k) {
+        unset($new_sizes[$k]);
+    }
+    return $new_sizes;
+});
+
+// ─────────────────────────────────────────────────────────────────────
 // Admin tweaks (lean dashboard)
 // ─────────────────────────────────────────────────────────────────────
 function nfedit_admin_remove_dashboard_widgets() {

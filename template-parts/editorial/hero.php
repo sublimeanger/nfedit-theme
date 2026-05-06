@@ -2,7 +2,7 @@
 defined('ABSPATH') || exit;
 
 $post_id    = (int) $args['post_id'];
-$hero_url   = isset($args['hero_url']) ? (string) $args['hero_url'] : '';
+$hero_id    = isset($args['hero_id']) ? (int) $args['hero_id'] : 0;
 $cluster    = isset($args['cluster']) ? (string) $args['cluster'] : '';
 $dek        = isset($args['dek']) ? (string) $args['dek'] : '';
 $author     = isset($args['author']) ? (string) $args['author'] : '';
@@ -10,8 +10,13 @@ $display_dt = isset($args['display_dt']) ? (string) $args['display_dt'] : '';
 $read_min   = isset($args['read_min']) ? (int) $args['read_min'] : 0;
 ?>
 <section class="nfedit-editorial-hero">
-    <?php if ($hero_url): ?>
-        <img src="<?php echo esc_url($hero_url); ?>" alt="" class="nfedit-editorial-hero__image" />
+    <?php if ($hero_id): ?>
+        <?php echo wp_get_attachment_image($hero_id, 'nfedit_hero_md', false, [
+            'alt'           => '',
+            'class'         => 'nfedit-editorial-hero__image',
+            'loading'       => 'eager',
+            'fetchpriority' => 'high',
+        ]); ?>
     <?php endif; ?>
     <div class="nfedit-editorial-hero__gradient"></div>
     <div class="container-edit nfedit-editorial-hero__caption">

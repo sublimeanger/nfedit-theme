@@ -53,12 +53,15 @@ if ($rule === 'feature') {
 $img_id  = get_field('hero_image', $pid);
 $img_id  = is_array($img_id) ? (isset($img_id['ID']) ? (int) $img_id['ID'] : 0) : (int) $img_id;
 if (!$img_id) $img_id = (int) get_post_thumbnail_id($pid);
-$img_url = $img_id ? wp_get_attachment_image_url($img_id, 'nfedit_card_4_5') : '';
 ?>
 <a href="<?php echo esc_url(get_permalink($pid)); ?>" class="nfedit-collection-card">
     <div class="nfedit-collection-card__media">
-        <?php if ($img_url): ?>
-            <img src="<?php echo esc_url($img_url); ?>" alt="<?php echo esc_attr(get_the_title($pid)); ?>" loading="lazy" class="img-muted" />
+        <?php if ($img_id): ?>
+            <?php echo wp_get_attachment_image($img_id, 'nfedit_card_4_5', false, [
+                'alt'     => get_the_title($pid),
+                'loading' => 'lazy',
+                'class'   => 'img-muted',
+            ]); ?>
         <?php endif; ?>
         <div class="nfedit-collection-card__gradient"></div>
         <h3 class="nfedit-collection-card__name"><?php echo esc_html(get_the_title($pid)); ?></h3>

@@ -11,7 +11,6 @@ $hero_id  = is_array($hero_id) ? (isset($hero_id['ID']) ? (int) $hero_id['ID'] :
 if (!$hero_id) {
     $hero_id = (int) get_post_thumbnail_id($post_id);
 }
-$hero_url = $hero_id ? wp_get_attachment_image_url($hero_id, 'nfedit_hero_xl') : '';
 $name     = get_the_title($post_id);
 
 $area_terms = get_the_terms($post_id, 'area_taxonomy');
@@ -19,8 +18,12 @@ $area = ($area_terms && !is_wp_error($area_terms)) ? $area_terms[0]->name : '';
 ?>
 <section class="nfedit-property-hero" data-property-hero>
     <div class="nfedit-property-hero__media">
-        <?php if ($hero_url): ?>
-            <img src="<?php echo esc_url($hero_url); ?>" alt="<?php echo esc_attr($name); ?>" />
+        <?php if ($hero_id): ?>
+            <?php echo wp_get_attachment_image($hero_id, 'nfedit_hero_xl', false, [
+                'alt'           => $name,
+                'loading'       => 'eager',
+                'fetchpriority' => 'high',
+            ]); ?>
         <?php endif; ?>
         <div class="nfedit-property-hero__gradient"></div>
         <div class="nfedit-property-hero__caption">

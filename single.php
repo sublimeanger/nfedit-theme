@@ -24,7 +24,6 @@ $display_dt  = function_exists('get_field') ? (string) get_field('display_date',
 $hero_id  = function_exists('get_field') ? get_field('hero_image', $post_id) : 0;
 $hero_id  = is_array($hero_id) ? (isset($hero_id['ID']) ? (int) $hero_id['ID'] : 0) : (int) $hero_id;
 if (!$hero_id) $hero_id = (int) get_post_thumbnail_id($post_id);
-$hero_url = $hero_id ? wp_get_attachment_image_url($hero_id, 'nfedit_hero_xl') : '';
 
 $clusters      = get_the_terms($post_id, 'cluster');
 $cluster       = ($clusters && !is_wp_error($clusters)) ? $clusters[0] : null;
@@ -44,7 +43,7 @@ get_header(); ?>
 
     <?php get_template_part('template-parts/editorial/hero', null, [
         'post_id'    => $post_id,
-        'hero_url'   => $hero_url,
+        'hero_id'    => $hero_id,
         'cluster'    => $cluster_label,
         'dek'        => $dek,
         'author'     => $author,

@@ -11,7 +11,7 @@ if (!$sid) return;
 $dek      = function_exists('get_field') ? (string) get_field('dek', $sid) : '';
 $image_id = function_exists('get_field') ? get_field('image', $sid) : 0;
 $image_id = is_array($image_id) ? (isset($image_id['ID']) ? (int) $image_id['ID'] : 0) : (int) $image_id;
-$image    = $image_id ? wp_get_attachment_image_url($image_id, 'nfedit_card_16_9') : '';
+if (!$image_id) $image_id = (int) get_post_thumbnail_id($sid);
 $kinds    = get_the_terms($sid, 'surround_kind');
 $kind     = ($kinds && !is_wp_error($kinds)) ? strtoupper($kinds[0]->name) : '';
 $title    = get_the_title($sid);
@@ -20,8 +20,12 @@ $permalink = get_permalink($sid);
 <a href="<?php echo esc_url($permalink); ?>" class="nfedit-surround-card-link" aria-label="<?php echo esc_attr(sprintf('Read about %s', $title)); ?>">
     <article class="nfedit-surround-card">
         <div class="nfedit-surround-card__media">
-            <?php if ($image): ?>
-                <img src="<?php echo esc_url($image); ?>" alt="<?php echo esc_attr($title); ?>" loading="lazy" class="img-muted" />
+            <?php if ($image_id): ?>
+                <?php echo wp_get_attachment_image($image_id, 'nfedit_card_16_9', false, [
+                    'alt'     => $title,
+                    'loading' => 'lazy',
+                    'class'   => 'img-muted',
+                ]); ?>
             <?php endif; ?>
         </div>
         <div class="nfedit-surround-card__body">

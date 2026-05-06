@@ -1,15 +1,20 @@
 <?php
 defined('ABSPATH') || exit;
 $post_id          = $args['post_id'];
-$hero_url         = $args['hero_url'];
+$hero_id          = isset($args['hero_id']) ? (int) $args['hero_id'] : 0;
 $category         = $args['category'];
 $dek              = $args['dek'];
 $read_min         = $args['read_min'];
 $last_upd_display = $args['last_upd_display'];
 ?>
 <section class="nfedit-guide-hero">
-    <?php if ($hero_url): ?>
-        <img src="<?php echo esc_url($hero_url); ?>" alt="" class="nfedit-guide-hero__image" />
+    <?php if ($hero_id): ?>
+        <?php echo wp_get_attachment_image($hero_id, 'nfedit_hero_xl', false, [
+            'alt'           => '',
+            'class'         => 'nfedit-guide-hero__image',
+            'loading'       => 'eager',
+            'fetchpriority' => 'high',
+        ]); ?>
     <?php endif; ?>
     <div class="nfedit-guide-hero__gradient"></div>
     <div class="container-edit nfedit-guide-hero__caption">

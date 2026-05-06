@@ -57,13 +57,19 @@ function nfedit_get_property_card_data($post_id) {
     $area        = ($area_terms && !is_wp_error($area_terms)) ? $area_terms[0]->name : '';
     $price_unit  = function_exists('get_field') ? get_field('price_unit', $post_id) : '';
 
+    // Resolve attachment ID so the property card template can use wp_get_attachment_image() (srcset).
+    $image_id = function_exists('get_field') ? get_field('hero_image', $post_id) : 0;
+    $image_id = is_array($image_id) ? (isset($image_id['ID']) ? (int) $image_id['ID'] : 0) : (int) $image_id;
+    if (!$image_id) $image_id = (int) get_post_thumbnail_id($post_id);
+
     return [
         'id'        => get_post_field('post_name', $post_id),
         'tier'      => $tier,
         'name'      => get_the_title($post_id),
         'area'      => $area,
         'oneLiner'  => function_exists('get_field') ? (string) get_field('one_liner', $post_id) : '',
-        'image'     => get_the_post_thumbnail_url($post_id, 'nfedit_card_4_3'),
+        'image_id'  => $image_id,
+        'image'     => $image_id ? wp_get_attachment_image_url($image_id, 'nfedit_card_4_3') : get_the_post_thumbnail_url($post_id, 'nfedit_card_4_3'),
         'sleeps'    => function_exists('get_field') ? (int) get_field('sleeps', $post_id) : 0,
         'bedrooms'  => function_exists('get_field') ? (int) get_field('bedrooms', $post_id) : 0,
         'dogs'      => function_exists('get_field') ? (bool) get_field('dogs_welcome', $post_id) : false,

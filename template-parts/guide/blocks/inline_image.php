@@ -12,13 +12,15 @@ if (is_array($image) && isset($image['ID'])) {
 $caption = isset($block['caption']) ? $block['caption'] : '';
 if (!$att_id) return;
 
-$src  = wp_get_attachment_image_url($att_id, 'nfedit_card_16_9');
-$full = wp_get_attachment_image_url($att_id, 'nfedit_hero_xl');
 $alt  = get_post_meta($att_id, '_wp_attachment_image_alt', true);
 if (!$alt && $caption) $alt = $caption;
 ?>
 <figure class="nfedit-guide-block-image">
-    <img src="<?php echo esc_url($src ?: $full); ?>" alt="<?php echo esc_attr($alt); ?>" loading="lazy" class="img-muted" />
+    <?php echo wp_get_attachment_image($att_id, 'nfedit_card_16_9', false, [
+        'alt'     => $alt,
+        'loading' => 'lazy',
+        'class'   => 'img-muted',
+    ]); ?>
     <?php if ($caption): ?>
         <figcaption><?php echo esc_html($caption); ?></figcaption>
     <?php endif; ?>
