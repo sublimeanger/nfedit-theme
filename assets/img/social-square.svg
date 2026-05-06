@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080">
+  <!-- Bone background -->
+  <rect width="1080" height="1080" fill="#F5F2EC"/>
+
+  <!-- Subtle inner panel -->
+  <rect x="60" y="60" width="960" height="960" fill="none" stroke="#A89F92" stroke-width="1" opacity="0.4"/>
+
+  <!-- Wordmark: "The New Forest" -->
+  <text x="540" y="490"
+        text-anchor="middle"
+        font-family="P052, 'URW Palladio L', Palatino, Georgia, serif"
+        font-size="110"
+        font-weight="500"
+        fill="#1A1A1A"
+        letter-spacing="2">The New Forest</text>
+
+  <!-- "Edit" italic accent in furze -->
+  <text x="540" y="680"
+        text-anchor="middle"
+        font-family="P052, 'URW Palladio L', Palatino, Georgia, serif"
+        font-style="italic"
+        font-weight="500"
+        font-size="200"
+        fill="#D4A93C">Edit</text>
+
+  <!-- Divider rule -->
+  <line x1="440" y1="760" x2="640" y2="760" stroke="#A89F92" stroke-width="1.2"/>
+
+  <!-- Tagline -->
+  <text x="540" y="830"
+        text-anchor="middle"
+        font-family="P052, 'URW Palladio L', Palatino, Georgia, serif"
+        font-style="italic"
+        font-size="36"
+        fill="#5C6B4F">Curated cottages in the New Forest National Park</text>
+
+  <!-- Domain -->
+  <text x="540" y="900"
+        text-anchor="middle"
+        font-family="P052, 'URW Palladio L', Palatino, Georgia, serif"
+        font-size="28"
+        fill="#A89F92"
+        letter-spacing="3">newforestedit.co.uk</text>
+</svg>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="6" ry="6" fill="#2D3B2C"/>
+  <g fill="#F5F2EC">
+    <!-- Trunk -->
+    <rect x="14.5" y="19" width="3" height="8"/>
+    <!-- Oak-style fluffy canopy: cluster of overlapping circles -->
+    <circle cx="16" cy="13" r="6.5"/>
+    <circle cx="11" cy="15" r="4"/>
+    <circle cx="21" cy="15" r="4"/>
+    <circle cx="13.5" cy="10" r="3"/>
+    <circle cx="18.5" cy="10" r="3"/>
+    <circle cx="16" cy="17.5" r="4"/>
+  </g>
+</svg>

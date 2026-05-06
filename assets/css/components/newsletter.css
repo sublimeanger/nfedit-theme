@@ -1,0 +1,110 @@
+/* nfedit Newsletter — full + compact variants */
+
+.nfedit-newsletter {
+    background: hsl(var(--bone-warm));
+    padding: 6rem 0;
+}
+
+.nfedit-newsletter--compact {
+    padding: 3rem 0;
+}
+
+.nfedit-newsletter__inner {
+    text-align: center;
+    max-width: 48rem;
+    margin: 0 auto;
+}
+
+.nfedit-newsletter__eyebrow {
+    color: hsl(var(--moss));
+    margin: 0 0 1.25rem 0;
+}
+
+.nfedit-newsletter__heading {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.875rem;
+    color: hsl(var(--ink));
+    line-height: 1.15;
+    margin: 0;
+}
+
+@media (min-width: 768px) {
+    .nfedit-newsletter__heading {
+        font-size: 3rem;
+    }
+}
+
+.nfedit-newsletter--compact .nfedit-newsletter__heading {
+    font-size: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .nfedit-newsletter--compact .nfedit-newsletter__heading {
+        font-size: 2rem;
+    }
+}
+
+.nfedit-newsletter__body {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: hsl(var(--ink-soft));
+    margin: 1.25rem auto 0 auto;
+    max-width: 32rem;
+}
+
+.nfedit-newsletter__form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-width: 32rem;
+    margin: 2.5rem auto 0 auto;
+}
+
+@media (min-width: 640px) {
+    .nfedit-newsletter__form {
+        flex-direction: row;
+    }
+}
+
+.nfedit-newsletter__input {
+    flex: 1;
+    background: hsl(var(--bone));
+    border: 1px solid hsl(var(--stone));
+    padding: 1rem 1.25rem;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: hsl(var(--ink));
+    outline: none;
+    transition: border-color var(--duration-fast) ease;
+}
+
+.nfedit-newsletter__input::placeholder {
+    color: hsl(var(--stone));
+}
+
+.nfedit-newsletter__input:focus {
+    border-color: hsl(var(--forest));
+}
+
+.nfedit-newsletter__privacy {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    color: hsl(var(--moss-light));
+    margin: 1rem 0 0 0;
+}
+
+/* Screen-reader-only label */
+.screen-reader-text {
+    border: 0;
+    clip: rect(1px, 1px, 1px, 1px);
+    -webkit-clip-path: inset(50%);
+    clip-path: inset(50%);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    word-wrap: normal !important;
+}

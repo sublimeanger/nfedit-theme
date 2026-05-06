@@ -1,0 +1,44 @@
+/* ============================================================
+   Base — body, headings, ::selection
+   Drop into: wp-content/themes/nfedit/assets/css/base.css
+   ============================================================ */
+
+* {
+  border-color: hsl(var(--border));
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: var(--font-body);
+  font-size: var(--fs-body-mobile);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'ss01', 'cv11';
+}
+
+@media (min-width: 768px) {
+  body {
+    font-size: var(--fs-body-desktop);
+  }
+}
+
+h1, h2, h3, .font-display {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--lh-tight);
+}
+
+::selection {
+  background: hsl(var(--furze) / 0.4);
+  color: hsl(var(--ink));
+}
+
+

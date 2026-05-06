@@ -1,0 +1,24 @@
+.nfedit-mini-card { /* container */ }
+.nfedit-mini-card__media {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: hsl(var(--bone-warm));
+}
+.nfedit-mini-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.nfedit-mini-card__name {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.125rem;
+    color: hsl(var(--ink));
+    margin: 0.75rem 0 0 0;
+}
+.nfedit-mini-card__dek {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: hsl(var(--ink-soft));
+    margin: 0.25rem 0 0 0;
+}

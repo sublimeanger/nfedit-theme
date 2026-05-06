@@ -1,0 +1,266 @@
+/* ============================================================
+   Utility classes
+   Drop into: wp-content/themes/nfedit/assets/css/utilities.css
+   ============================================================ */
+
+/* Layout containers */
+.container-edit {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  padding-left: var(--container-pad-mobile);
+  padding-right: var(--container-pad-mobile);
+  max-width: var(--container-max);
+}
+
+@media (min-width: 768px) {
+  .container-edit {
+    padding-left: var(--container-pad-desktop);
+    padding-right: var(--container-pad-desktop);
+  }
+}
+
+.content-edit {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  max-width: var(--content-max);
+}
+
+/* Eyebrow label (used everywhere) */
+.eyebrow {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: var(--fs-eyebrow);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+}
+
+/* The "Edit" italic flourish — used in wordmark + nav links + headings */
+.edit-italic {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: hsl(var(--furze));
+}
+
+/* Drop cap on first letter (Plum-Guide style) */
+.drop-cap::first-letter {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 4rem;
+  float: left;
+  line-height: 1;
+  padding: 0.25rem 0.75rem 0 0;
+  color: hsl(var(--forest));
+}
+
+/* Editorial prose (article body) */
+.editorial-prose p {
+  margin-bottom: 1.25em;
+}
+
+.editorial-prose strong {
+  font-weight: 600;
+  color: hsl(var(--ink));
+}
+
+.editorial-prose em {
+  font-style: italic;
+}
+
+/* Buttons */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  font-family: var(--font-body);
+  background: hsl(var(--forest));
+  color: hsl(var(--bone));
+  border: none;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) ease;
+}
+
+.btn-primary:hover {
+  background: hsl(var(--ink));
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  font-family: var(--font-body);
+  background: transparent;
+  color: hsl(var(--forest));
+  border: 1px solid hsl(var(--forest));
+  cursor: pointer;
+  transition: background-color var(--duration-fast) ease, color var(--duration-fast) ease;
+}
+
+.btn-secondary:hover {
+  background: hsl(var(--forest));
+  color: hsl(var(--bone));
+}
+
+.btn-tertiary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: hsl(var(--forest));
+  font-family: var(--font-body);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+  transition: color var(--duration-fast) ease;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.btn-tertiary .arrow {
+  transition: transform var(--duration-fast) ease;
+}
+
+.btn-tertiary:hover {
+  color: hsl(var(--ink));
+}
+
+.btn-tertiary:hover .arrow {
+  transform: translateX(4px);
+}
+
+/* Horizontal scroll-snap rail (used for property rails, surrounds, etc.) */
+.scroll-rail {
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.scroll-rail::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll-rail > * {
+  scroll-snap-align: start;
+}
+
+/* Image desaturation default (-15%), brightens on hover */
+.img-muted {
+  filter: saturate(0.85);
+  transition: filter var(--duration-slow) ease, transform var(--duration-slow) ease;
+}
+
+.group:hover .img-muted,
+*:hover > .img-muted {
+  filter: saturate(1);
+  transform: scale(1.02);
+}
+
+/* Hairline divider */
+.hairline {
+  border-color: hsl(var(--stone-light));
+}
+
+/* Color text utility classes (Tailwind equivalents — needed in raw CSS templates) */
+.text-ink         { color: hsl(var(--ink)); }
+.text-ink-soft    { color: hsl(var(--ink-soft)); }
+.text-forest      { color: hsl(var(--forest)); }
+.text-moss        { color: hsl(var(--moss)); }
+.text-moss-light  { color: hsl(var(--moss-light)); }
+.text-bone        { color: hsl(var(--bone)); }
+.text-bone-warm   { color: hsl(var(--bone-warm)); }
+.text-furze       { color: hsl(var(--furze)); }
+.text-stone       { color: hsl(var(--stone)); }
+.text-bracken     { color: hsl(var(--bracken)); }
+
+/* Background utility classes */
+.bg-bone          { background-color: hsl(var(--bone)); }
+.bg-bone-warm     { background-color: hsl(var(--bone-warm)); }
+.bg-forest        { background-color: hsl(var(--forest)); }
+.bg-forest-light  { background-color: hsl(var(--forest-light)); }
+.bg-moss          { background-color: hsl(var(--moss)); }
+.bg-furze         { background-color: hsl(var(--furze)); }
+.bg-furze-soft    { background-color: hsl(var(--furze-soft)); }
+.bg-ink           { background-color: hsl(var(--ink)); }
+
+/* Border utility classes */
+.border-stone-light { border-color: hsl(var(--stone-light)); }
+.border-stone       { border-color: hsl(var(--stone)); }
+.border-moss        { border-color: hsl(var(--moss)); }
+.border-forest      { border-color: hsl(var(--forest)); }
+
+/* Font family utilities */
+.font-display { font-family: var(--font-display); }
+.font-body    { font-family: var(--font-body); }
+
+/* Animations */
+.anim-reveal {
+  animation: nfedit-reveal var(--duration-slow) ease-out both;
+}
+
+@keyframes nfedit-reveal {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.anim-spin-slow {
+  animation: nfedit-spin 2s linear infinite;
+}
+
+@keyframes nfedit-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Reduced-motion safety */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
+/* ============================================================
+   Notes for Phase 2 implementation
+   ============================================================
+   
+   1. Tailwind utility translation
+      Lovable used Tailwind utility classes inline in JSX (e.g.,
+      `bg-bone py-16 md:py-20`). When porting to WP templates, prefer
+      semantic component CSS class names — but the colour/spacing
+      utility classes above are kept as escape hatches for edge cases.
+   
+   2. Container queries
+      Some Lovable patterns scale content with viewport width via
+      Tailwind responsive prefixes. Translate these to media queries
+      against the breakpoints below.
+   
+   3. Breakpoints (matching Tailwind defaults Lovable used)
+      sm:  640px   — small tablet
+      md:  768px   — tablet
+      lg:  1024px  — desktop
+      xl:  1280px  — wide desktop
+      2xl: 1240px  — container max
+   
+   4. Component CSS files
+      Each component in template-parts/components/* gets a matching
+      CSS file in assets/css/components/*.css. Page-specific styles
+      go in assets/css/pages/*.css. Both imported via main.css.
+   
+   5. Specificity strategy
+      Avoid !important. Component classes namespaced .nfedit-{component}
+      to avoid plugin conflicts.
+*/

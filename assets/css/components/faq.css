@@ -1,0 +1,34 @@
+.nfedit-faq {
+    border-bottom: 1px solid hsl(var(--stone-light));
+}
+.nfedit-faq__q {
+    width: 100%;
+    background: transparent;
+    border: 0;
+    padding: 1.25rem 0;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 17px;
+    color: hsl(var(--ink));
+}
+.nfedit-faq__icon { color: hsl(var(--moss)); flex-shrink: 0; display: inline-flex; }
+.nfedit-faq__icon--minus { display: none; }
+.nfedit-faq.is-open .nfedit-faq__icon--plus  { display: none; }
+.nfedit-faq.is-open .nfedit-faq__icon--minus { display: inline-flex; }
+.nfedit-faq__a {
+    display: none;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: hsl(var(--ink-soft));
+    padding-bottom: 1.5rem;
+    max-width: 42rem;
+    line-height: 1.6;
+}
+.nfedit-faq.is-open .nfedit-faq__a { display: block; }
+.nfedit-faq__a p { margin: 0; }

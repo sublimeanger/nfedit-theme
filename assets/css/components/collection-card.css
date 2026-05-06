@@ -1,0 +1,53 @@
+.nfedit-collection-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+.nfedit-collection-card__media {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4 / 5;
+    background: hsl(var(--bone-warm));
+}
+@media (min-width: 768px) {
+    .nfedit-collection-card__media { aspect-ratio: 1 / 1; }
+}
+.nfedit-collection-card__media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.nfedit-collection-card__gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to top,
+        hsl(var(--ink) / 0.7),
+        hsl(var(--ink) / 0.1) 50%,
+        transparent
+    );
+    pointer-events: none;
+}
+.nfedit-collection-card__name {
+    position: absolute;
+    left: 1.25rem;
+    right: 1.25rem;
+    bottom: 1rem;
+    font-family: var(--font-display);
+    font-weight: 500;
+    color: hsl(var(--bone));
+    line-height: 1.2;
+    font-size: 1.25rem;
+    margin: 0;
+}
+@media (min-width: 768px) {
+    .nfedit-collection-card__name { font-size: 22px; }
+}
+.nfedit-collection-card__count {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: hsl(var(--moss-light));
+    margin: 0.75rem 0 0 0;
+}

@@ -1,0 +1,40 @@
+.nfedit-area-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    transition: transform var(--duration-fast) ease;
+}
+.nfedit-area-card:hover { transform: translateY(-4px); }
+.nfedit-area-card__media {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: hsl(var(--bone-warm));
+}
+.nfedit-area-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.nfedit-area-card__body { padding-top: 1rem; }
+.nfedit-area-card__kind { color: hsl(var(--moss)); }
+.nfedit-area-card__name {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.5rem;
+    color: hsl(var(--ink));
+    margin: 0.5rem 0 0 0;
+    line-height: 1.2;
+}
+.nfedit-area-card__dek {
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: hsl(var(--ink-soft));
+    margin: 0.25rem 0 0 0;
+}
+.nfedit-area-card__count {
+    font-family: var(--font-body);
+    font-style: italic;
+    font-size: 13px;
+    color: hsl(var(--moss-light));
+    margin: 0.5rem 0 0 0;
+}

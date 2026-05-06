@@ -1,0 +1,71 @@
+/* Collections archive — /collections/ */
+
+.nfedit-collections-archive__tabs {
+    position: sticky;
+    top: 64px;
+    z-index: 30;
+    background: hsl(var(--bone));
+    border-top: 1px solid hsl(var(--stone-light));
+    border-bottom: 1px solid hsl(var(--stone-light));
+}
+@media (min-width: 768px) {
+    .nfedit-collections-archive__tabs { top: 80px; }
+}
+.nfedit-collections-archive__tabs-inner {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.nfedit-collections-archive__tabs-inner::-webkit-scrollbar { display: none; }
+.nfedit-collections-archive__tabs ul {
+    list-style: none;
+    margin: 0;
+    padding: 1rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: max-content;
+}
+.nfedit-collections-archive__tab {
+    background: hsl(var(--bone));
+    color: hsl(var(--ink));
+    border: 1px solid hsl(var(--stone-light));
+    padding: 0.5rem 1rem;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color var(--duration-fast) ease, background-color var(--duration-fast) ease, color var(--duration-fast) ease;
+}
+@media (min-width: 768px) {
+    .nfedit-collections-archive__tab { font-size: 14px; }
+}
+.nfedit-collections-archive__tab:hover { border-color: hsl(var(--forest)); }
+.nfedit-collections-archive__tab.is-active {
+    background: hsl(var(--forest));
+    color: hsl(var(--bone));
+    border-color: hsl(var(--forest));
+}
+.nfedit-collections-archive__panels {
+    padding: 4rem 0;
+}
+@media (min-width: 768px) {
+    .nfedit-collections-archive__panels { padding: 5rem 0; }
+}
+.nfedit-collections-archive__panel[hidden] { display: none; }
+.nfedit-collections-archive__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+@media (min-width: 768px) {
+    .nfedit-collections-archive__grid { grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+}
+@media (min-width: 1024px) {
+    .nfedit-collections-archive__grid { grid-template-columns: repeat(4, 1fr); }
+}
+.nfedit-collections-archive__empty {
+    text-align: center;
+    font-family: var(--font-body);
+    color: hsl(var(--ink-soft));
+    padding: 3rem 0;
+}

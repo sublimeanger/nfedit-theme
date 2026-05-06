@@ -1,0 +1,307 @@
+/* ─── Single Surround template (Phase 12e) ──────────────────────── */
+
+.nfedit-surround--single {
+    color: hsl(var(--ink));
+}
+
+/* ─── Hero ──────────────────────────────────────────────────────── */
+.nfedit-surround__hero {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+.nfedit-surround__hero-image {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    max-height: 70vh;
+    background: hsl(var(--bone-warm));
+}
+.nfedit-surround__hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.nfedit-surround__hero-text {
+    padding: 3rem 1.5rem 2rem;
+    text-align: center;
+}
+@media (min-width: 768px) {
+    .nfedit-surround__hero-text { padding: 4rem 2rem 2.5rem; }
+}
+.nfedit-surround__eyebrow {
+    color: hsl(var(--moss));
+    margin: 0 0 1rem 0;
+}
+.nfedit-surround__kind { letter-spacing: 0.08em; }
+.nfedit-surround__area {
+    color: hsl(var(--moss));
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    transition: color var(--duration-fast) ease;
+}
+.nfedit-surround__area:hover { color: hsl(var(--forest)); }
+.nfedit-surround__title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    color: hsl(var(--ink));
+    line-height: 1.05;
+    font-size: 2.25rem;
+    margin: 0 auto;
+    max-width: 48rem;
+}
+@media (min-width: 768px) {
+    .nfedit-surround__title { font-size: 3.5rem; }
+}
+.nfedit-surround__dek {
+    font-family: var(--font-display);
+    font-style: italic;
+    color: hsl(var(--ink-soft));
+    margin: 1.5rem auto 0;
+    max-width: 36rem;
+    font-size: 1.125rem;
+}
+
+/* ─── Two-column layout (main + practical card) ─────────────────── */
+.nfedit-surround__layout {
+    display: block;
+    padding: 3rem 0 2rem;
+}
+@media (min-width: 1024px) {
+    .nfedit-surround__layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 320px;
+        gap: 4rem;
+        align-items: start;
+        padding: 4rem 0 3rem;
+    }
+}
+
+/* ─── Body (editorial prose) ────────────────────────────────────── */
+.nfedit-surround__body {
+    font-family: var(--font-body);
+    font-size: 17px;
+    line-height: 1.75;
+    color: hsl(var(--ink));
+    max-width: 44rem;
+}
+@media (min-width: 768px) { .nfedit-surround__body { font-size: 18px; } }
+.nfedit-surround__body p { margin: 0 0 1.5rem 0; }
+.nfedit-surround__body h2 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    color: hsl(var(--ink));
+    font-size: 1.625rem;
+    line-height: 1.2;
+    margin: 2.5rem 0 1rem 0;
+}
+@media (min-width: 768px) { .nfedit-surround__body h2 { font-size: 1.875rem; } }
+.nfedit-surround__body a {
+    color: hsl(var(--forest));
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+.nfedit-surround__body strong { color: hsl(var(--ink)); font-weight: 600; }
+.nfedit-surround__body em { font-style: italic; }
+
+/* ─── Map ───────────────────────────────────────────────────────── */
+.nfedit-surround__map {
+    margin: 3rem 0 0 0;
+    max-width: 44rem;
+}
+.nfedit-surround__map-title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    color: hsl(var(--ink));
+    font-size: 1.5rem;
+    margin: 0 0 1rem 0;
+}
+.nfedit-surround__map iframe {
+    border: 1px solid hsl(var(--stone-light));
+    background: hsl(var(--bone-warm));
+}
+.nfedit-surround__map-link {
+    margin: 0.5rem 0 0 0;
+    font-size: 0.875rem;
+    color: hsl(var(--moss));
+}
+.nfedit-surround__map-link a {
+    color: hsl(var(--forest));
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+/* ─── Practical card (sidebar) ──────────────────────────────────── */
+.nfedit-surround-card {
+    background: hsl(var(--bone-warm));
+    border: 1px solid hsl(var(--stone-light));
+    padding: 1.75rem;
+    margin: 2rem 0 0;
+    font-family: var(--font-body);
+    color: hsl(var(--ink));
+}
+@media (min-width: 1024px) {
+    .nfedit-surround-card {
+        position: sticky;
+        top: 100px;
+        margin: 0;
+    }
+}
+.nfedit-surround-card__title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.125rem;
+    color: hsl(var(--ink));
+    margin: 0 0 1.25rem 0;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid hsl(var(--stone-light));
+}
+.nfedit-surround-card__row {
+    margin: 0 0 1rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+.nfedit-surround-card__row:last-child { margin-bottom: 0; }
+.nfedit-surround-card__label {
+    color: hsl(var(--moss));
+    font-size: 0.75rem;
+}
+.nfedit-surround-card__value {
+    color: hsl(var(--ink));
+    font-size: 0.9375rem;
+    line-height: 1.5;
+}
+.nfedit-surround-card__value a {
+    color: hsl(var(--forest));
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+.nfedit-surround-card__row--what-to-order .nfedit-surround-card__value {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.0625rem;
+    color: hsl(var(--ink));
+}
+.nfedit-surround-card__hours-list,
+.nfedit-surround-card__walking-list,
+.nfedit-surround-card__best-for {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 0.9375rem;
+}
+.nfedit-surround-card__hours-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.25rem 0;
+    border-bottom: 1px dashed hsl(var(--stone-light));
+}
+.nfedit-surround-card__hours-list li:last-child { border-bottom: 0; }
+.nfedit-surround-card__day {
+    color: hsl(var(--moss));
+    font-weight: 500;
+}
+.nfedit-surround-card__walking-list li { padding: 0.25rem 0; }
+.nfedit-surround-card__park { font-weight: 500; }
+.nfedit-surround-card__mins { color: hsl(var(--ink-soft)); }
+.nfedit-surround-card__note { color: hsl(var(--moss)); font-size: 0.8125rem; }
+.nfedit-surround-card__best-for {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+.nfedit-surround-card__best-for li {
+    background: hsl(var(--bone));
+    border: 1px solid hsl(var(--stone-light));
+    padding: 0.25rem 0.625rem;
+    font-size: 0.8125rem;
+    color: hsl(var(--ink));
+}
+.nfedit-surround-card__notes {
+    color: hsl(var(--ink-soft));
+    font-size: 0.875rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* ─── Cottages rail (reverse lookup) ────────────────────────────── */
+.nfedit-surround__cottages {
+    background: hsl(var(--bone-warm));
+    padding: 4rem 0;
+    margin-top: 3rem;
+}
+@media (min-width: 768px) { .nfedit-surround__cottages { padding: 5rem 0; } }
+.nfedit-surround__cottages-heading {
+    font-family: var(--font-display);
+    font-weight: 500;
+    color: hsl(var(--ink));
+    font-size: 1.875rem;
+    margin: 0 0 0.5rem 0;
+    text-align: center;
+}
+@media (min-width: 768px) { .nfedit-surround__cottages-heading { font-size: 2.25rem; } }
+.nfedit-surround__cottages-dek {
+    font-family: var(--font-display);
+    font-style: italic;
+    color: hsl(var(--ink-soft));
+    text-align: center;
+    margin: 0 0 2.5rem 0;
+}
+.nfedit-surround__cottages-rail {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    padding: 0 0 1rem 0;
+    -webkit-overflow-scrolling: touch;
+}
+.nfedit-surround__cottages-rail > * {
+    flex: 0 0 280px;
+}
+@media (min-width: 768px) {
+    .nfedit-surround__cottages-rail > * { flex: 0 0 320px; }
+}
+
+/* ─── Related rail ──────────────────────────────────────────────── */
+.nfedit-surround__related {
+    padding: 4rem 0 6rem;
+}
+@media (min-width: 768px) { .nfedit-surround__related { padding: 5rem 0 7rem; } }
+.nfedit-surround__related-heading {
+    font-family: var(--font-display);
+    font-weight: 500;
+    color: hsl(var(--ink));
+    font-size: 1.875rem;
+    margin: 0 0 2rem 0;
+}
+.nfedit-surround__related-rail {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    padding: 0 0 1rem 0;
+    -webkit-overflow-scrolling: touch;
+}
+.nfedit-surround__related-rail > * {
+    flex: 0 0 280px;
+}
+
+/* ─── Surround card link wrap (Phase 12f) ───────────────────────── */
+.nfedit-surround-card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    transition: transform var(--duration-fast) ease;
+}
+.nfedit-surround-card-link:hover {
+    transform: translateY(-2px);
+}
+.nfedit-surround-card-link:hover .nfedit-surround-card__name {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-color: hsl(var(--forest));
+}
+.nfedit-surround-card-link:focus-visible {
+    outline: 2px solid hsl(var(--forest));
+    outline-offset: 4px;
+}

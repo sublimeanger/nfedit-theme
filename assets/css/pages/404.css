@@ -1,0 +1,141 @@
+/* ─── Hero ─────────────────────────────────────────── */
+.nfedit-404-hero {
+    padding: 8rem 1.5rem 4rem;
+    text-align: center;
+}
+@media (min-width: 768px) {
+    .nfedit-404-hero { padding: 10rem 2rem 5rem; }
+}
+.nfedit-404-hero__big {
+    font-family: var(--font-display);
+    color: hsl(var(--furze));
+    font-size: 5rem;
+    line-height: 1;
+    margin: 0;
+    font-weight: 500;
+    font-style: italic;
+}
+@media (min-width: 768px) {
+    .nfedit-404-hero__big { font-size: 9rem; }
+}
+.nfedit-404-hero__eyebrow {
+    color: hsl(var(--moss));
+    margin: 2rem 0 1.25rem 0;
+}
+.nfedit-404-hero__title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    color: hsl(var(--ink));
+    line-height: 1.05;
+    font-size: 2.25rem;
+    max-width: 48rem;
+    margin: 0 auto;
+}
+@media (min-width: 768px) {
+    .nfedit-404-hero__title { font-size: 3.75rem; }
+}
+.nfedit-404-hero__body {
+    font-family: var(--font-body);
+    color: hsl(var(--ink-soft));
+    margin: 1.5rem auto 0;
+    max-width: 36rem;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+}
+.nfedit-404-hero__actions {
+    margin-top: 2.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+/* ─── Destinations ─────────────────────────────────── */
+.nfedit-404-destinations {
+    background: hsl(var(--bone-warm));
+    padding: 5rem 0;
+}
+@media (min-width: 768px) {
+    .nfedit-404-destinations { padding: 6rem 0; }
+}
+.nfedit-404-destinations__eyebrow {
+    color: hsl(var(--moss));
+    margin: 0 0 0.75rem 0;
+    text-align: center;
+}
+.nfedit-404-destinations__heading {
+    font-family: var(--font-display);
+    font-weight: 500;
+    color: hsl(var(--ink));
+    font-size: 1.875rem;
+    text-align: center;
+    margin: 0 0 3rem 0;
+}
+@media (min-width: 768px) { .nfedit-404-destinations__heading { font-size: 2.25rem; } }
+.nfedit-404-destinations__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+@media (min-width: 768px) {
+    .nfedit-404-destinations__grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+}
+@media (min-width: 1024px) {
+    .nfedit-404-destinations__grid { grid-template-columns: repeat(4, 1fr); }
+}
+.nfedit-404-destination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem 1.75rem;
+    background: hsl(var(--bone));
+    border: 1px solid hsl(var(--stone-light));
+    text-decoration: none;
+    color: inherit;
+    transition: border-color var(--duration-fast) ease, transform var(--duration-fast) ease;
+}
+.nfedit-404-destination:hover {
+    border-color: hsl(var(--forest));
+    transform: translateY(-2px);
+}
+.nfedit-404-destination__heading {
+    font-family: var(--font-display);
+    font-weight: 500;
+    color: hsl(var(--ink));
+    font-size: 1.25rem;
+    margin: 0;
+}
+.nfedit-404-destination__arrow {
+    color: hsl(var(--furze));
+    font-size: 1.5rem;
+}
+
+/* ─── Discovery rail ───────────────────────────────── */
+.nfedit-404-discovery {
+    padding: 5rem 0;
+}
+@media (min-width: 768px) {
+    .nfedit-404-discovery { padding: 6rem 0; }
+}
+.nfedit-404-discovery__eyebrow {
+    color: hsl(var(--moss));
+    margin: 0 0 0.75rem 0;
+    text-align: center;
+}
+.nfedit-404-discovery__heading {
+    font-family: var(--font-display);
+    font-weight: 500;
+    color: hsl(var(--ink));
+    font-size: 1.875rem;
+    text-align: center;
+    margin: 0 0 3rem 0;
+}
+@media (min-width: 768px) { .nfedit-404-discovery__heading { font-size: 2.25rem; } }
+.nfedit-404-discovery__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+@media (min-width: 768px) {
+    .nfedit-404-discovery__grid { grid-template-columns: repeat(3, 1fr); }
+}

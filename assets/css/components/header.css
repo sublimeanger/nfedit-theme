@@ -1,0 +1,193 @@
+/* nfedit Header — sticky, transparent over hero variants */
+
+.nfedit-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: var(--z-header);
+    height: 80px;
+    background: hsl(var(--bone) / 0.95);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid hsl(var(--stone-light));
+    color: hsl(var(--ink));
+    transition: height var(--duration-fast) ease,
+                background-color var(--duration-fast) ease,
+                color var(--duration-fast) ease;
+}
+
+.nfedit-header.is-scrolled {
+    height: 64px;
+}
+
+.nfedit-header--over-hero:not(.is-scrolled) {
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-bottom-color: transparent;
+    color: hsl(var(--bone));
+}
+
+.nfedit-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.nfedit-header__logo {
+    flex-shrink: 0;
+    text-decoration: none;
+    color: inherit;
+}
+
+.nfedit-header__nav {
+    display: none;
+    align-items: center;
+    gap: 2rem;
+}
+
+.nfedit-header__nav-link {
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: inherit;
+    text-decoration: none;
+    transition: color var(--duration-fast) ease;
+}
+
+.nfedit-header__nav-link:hover {
+    color: hsl(var(--furze));
+}
+
+.nfedit-header__actions {
+    display: none;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.nfedit-header__action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: inherit;
+    text-decoration: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: color var(--duration-fast) ease;
+}
+
+.nfedit-header__action:hover {
+    color: hsl(var(--furze));
+}
+
+.nfedit-header__action--oracle .nfedit-icon {
+    color: hsl(var(--furze));
+}
+
+.nfedit-header__mobile-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    margin-right: -0.5rem;
+    background: transparent;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+@media (min-width: 1024px) {
+    .nfedit-header__nav,
+    .nfedit-header__actions {
+        display: flex;
+    }
+    .nfedit-header__mobile-toggle {
+        display: none;
+    }
+}
+
+/* Wordmark — lives with header since header is its primary host */
+.nfedit-wordmark {
+    font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: var(--tracking-tight);
+    line-height: 1;
+    display: inline-block;
+}
+
+.nfedit-wordmark__edit {
+    font-style: italic;
+    color: hsl(var(--furze));
+}
+
+.nfedit-wordmark--sm { font-size: 1.125rem; }
+.nfedit-wordmark--md { font-size: 1.5rem; }
+.nfedit-wordmark--lg { font-size: 2rem; }
+
+@media (min-width: 768px) {
+    .nfedit-wordmark--md { font-size: 1.625rem; }
+    .nfedit-wordmark--lg { font-size: 2.5rem; }
+}
+
+/* Mobile overlay nav */
+.nfedit-mobile-nav {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-mobile-nav);
+    background: hsl(var(--bone));
+    color: hsl(var(--ink));
+    display: flex;
+    flex-direction: column;
+}
+
+.nfedit-mobile-nav[hidden] {
+    display: none;
+}
+
+.nfedit-mobile-nav__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 80px;
+    border-bottom: 1px solid hsl(var(--stone-light));
+}
+
+.nfedit-mobile-nav__close {
+    background: transparent;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    padding: 0.5rem;
+    margin-right: -0.5rem;
+}
+
+.nfedit-mobile-nav__list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding-top: 3rem;
+}
+
+.nfedit-mobile-nav__link {
+    font-family: var(--font-display);
+    font-size: 1.875rem;
+    color: hsl(var(--ink));
+    text-decoration: none;
+}
+
+/* Push main content below fixed header */
+.nfedit-main {
+    padding-top: 80px;
+}
+
+/* Hero pages have transparent header overlapping their hero — no top padding */
+body.nfedit-over-hero .nfedit-main {
+    padding-top: 0;
+}

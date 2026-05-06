@@ -1,0 +1,84 @@
+.nfedit-oracle {
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
+}
+.nfedit-oracle__form {
+    display: flex;
+    align-items: stretch;
+    border: 1px solid;
+    transition: all var(--duration-fast) ease;
+}
+.nfedit-oracle--light .nfedit-oracle__form {
+    border-color: hsl(var(--stone));
+    background: hsl(var(--bone) / 0.9);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+}
+.nfedit-oracle--dark .nfedit-oracle__form {
+    border-color: hsl(var(--moss-light) / 0.4);
+    background: hsl(var(--forest-light));
+}
+.nfedit-oracle__icon-slot {
+    display: flex;
+    align-items: center;
+    padding-left: 1.5rem;
+    color: hsl(var(--furze));
+}
+.nfedit-oracle__textarea {
+    flex: 1;
+    background: transparent;
+    border: 0;
+    resize: none;
+    outline: none;
+    padding: 1.25rem 1rem;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.5;
+    transition: all var(--duration-fast) ease;
+}
+.nfedit-oracle--light .nfedit-oracle__textarea { color: hsl(var(--ink)); }
+.nfedit-oracle--light .nfedit-oracle__textarea::placeholder { color: hsl(var(--ink-soft) / 0.55); }
+.nfedit-oracle--dark .nfedit-oracle__textarea { color: hsl(var(--bone)); }
+.nfedit-oracle--dark .nfedit-oracle__textarea::placeholder { color: hsl(var(--bone) / 0.55); }
+.nfedit-oracle__submit {
+    background: hsl(var(--forest));
+    color: hsl(var(--bone));
+    padding: 0 1.5rem;
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 1rem;
+    border: 0;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background-color var(--duration-fast) ease;
+}
+@media (min-width: 768px) { .nfedit-oracle__submit { padding: 0 2rem; } }
+.nfedit-oracle__submit:hover { background: hsl(var(--ink)); }
+.nfedit-oracle__chips {
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+.nfedit-oracle__chip {
+    font-family: var(--font-body);
+    font-size: 12px;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid;
+    cursor: pointer;
+    transition: background-color var(--duration-fast) ease;
+}
+@media (min-width: 768px) { .nfedit-oracle__chip { font-size: 14px; } }
+.nfedit-oracle--light .nfedit-oracle__chip {
+    background: hsl(var(--bone-warm));
+    color: hsl(var(--ink));
+    border-color: hsl(var(--stone-light));
+}
+.nfedit-oracle--light .nfedit-oracle__chip:hover { background: hsl(var(--stone-light) / 0.6); }
+.nfedit-oracle--dark .nfedit-oracle__chip {
+    background: hsl(var(--bone) / 0.1);
+    color: hsl(var(--bone));
+    border-color: hsl(var(--bone) / 0.2);
+}
+.nfedit-oracle--dark .nfedit-oracle__chip:hover { background: hsl(var(--bone) / 0.2); }

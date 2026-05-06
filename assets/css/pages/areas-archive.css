@@ -1,0 +1,126 @@
+/* Areas archive — /areas/ */
+
+.nfedit-areas-archive__intro {
+    background: hsl(var(--bone-warm));
+    padding: 4rem 0;
+}
+@media (min-width: 768px) {
+    .nfedit-areas-archive__intro { padding: 5rem 0; }
+}
+.nfedit-areas-archive__intro-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    max-width: 920px;
+    margin: 0 auto;
+}
+@media (min-width: 768px) {
+    .nfedit-areas-archive__intro-grid { grid-template-columns: 1fr 1fr; }
+}
+.nfedit-areas-archive__intro-eyebrow {
+    color: hsl(var(--moss));
+    margin: 0 0 1rem 0;
+}
+.nfedit-areas-archive__intro-body {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.75;
+    color: hsl(var(--ink));
+    margin: 0;
+}
+@media (min-width: 768px) {
+    .nfedit-areas-archive__intro-body { font-size: 1.125rem; }
+}
+.nfedit-areas-archive__map {
+    padding: 3rem 0;
+}
+.nfedit-areas-archive__map-heading {
+    font-family: var(--font-display);
+    font-weight: 500;
+    color: hsl(var(--ink));
+    font-size: 1.875rem;
+    margin: 0;
+}
+@media (min-width: 768px) {
+    .nfedit-areas-archive__map-heading { font-size: 2.25rem; }
+}
+.nfedit-areas-archive__map-dek {
+    font-family: var(--font-body);
+    color: hsl(var(--ink-soft));
+    margin: 0.75rem 0 1.5rem 0;
+}
+.nfedit-areas-archive__group {
+    padding: 4rem 0;
+}
+@media (min-width: 768px) {
+    .nfedit-areas-archive__group { padding: 5rem 0; }
+}
+.nfedit-areas-archive__group-eyebrow {
+    color: hsl(var(--moss));
+    margin: 0 0 1.5rem 0;
+}
+.nfedit-areas-archive__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+@media (min-width: 640px) {
+    .nfedit-areas-archive__grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1024px) {
+    .nfedit-areas-archive__grid { grid-template-columns: repeat(4, 1fr); }
+}
+.nfedit-areas-archive__divider {
+    border-top: 1px solid hsl(var(--stone-light));
+    max-width: 28rem;
+    margin: 0 auto;
+}
+.nfedit-areas-archive__editorials {
+    padding: 5rem 0;
+}
+.nfedit-areas-archive__editorials-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 2.5rem;
+}
+.nfedit-areas-archive__editorials-heading {
+    font-family: var(--font-display);
+    font-weight: 500;
+    color: hsl(var(--ink));
+    font-size: 1.875rem;
+    margin: 0;
+}
+@media (min-width: 768px) {
+    .nfedit-areas-archive__editorials-heading { font-size: 2.25rem; }
+}
+.nfedit-areas-archive__italic {
+    font-style: italic;
+    color: hsl(var(--furze));
+}
+.nfedit-areas-archive__editorials-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+@media (min-width: 768px) {
+    .nfedit-areas-archive__editorials-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1024px) {
+    .nfedit-areas-archive__editorials-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* Forest map placeholder */
+.nfedit-forest-map-placeholder__inner {
+    padding: 0;
+}
+.nfedit-forest-map-placeholder__visual {
+    width: 100%;
+    aspect-ratio: 2 / 1;
+    overflow: hidden;
+}
+.nfedit-forest-map-placeholder__visual svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}

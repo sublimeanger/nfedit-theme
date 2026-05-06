@@ -1,0 +1,22 @@
+# Backup files from in-place patches
+*.bak
+*.bak-*
+*.bak-phase*
+
+# OS noise
+.DS_Store
+._*
+Thumbs.db
+
+# Editor noise
+.idea/
+.vscode/
+*.swp
+*~
+
+# Logs
+*.log
+
+# PHP / Node build artefacts
+vendor/
+node_modules/

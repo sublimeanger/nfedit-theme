@@ -1,0 +1,78 @@
+.nfedit-property-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+.nfedit-property-card__media {
+    position: relative;
+    overflow: hidden;
+    background: hsl(var(--bone-warm));
+}
+.nfedit-property-card--standard .nfedit-property-card__media { aspect-ratio: 4 / 3; }
+.nfedit-property-card--featured .nfedit-property-card__media { aspect-ratio: 4 / 5; }
+.nfedit-property-card--minimal  .nfedit-property-card__media { aspect-ratio: 16 / 9; }
+
+.nfedit-property-card__media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.nfedit-property-card__body { padding-top: 1rem; }
+.nfedit-property-card__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+.nfedit-property-card__area { color: hsl(var(--moss)); }
+.nfedit-property-card__tier {
+    display: inline-block;
+    background: hsl(var(--furze));
+    color: hsl(var(--ink));
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-eyebrow);
+    padding: 0.25rem 0.5rem;
+}
+.nfedit-property-card__name {
+    font-family: var(--font-display);
+    font-weight: 500;
+    line-height: 1.2;
+    color: hsl(var(--ink));
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.nfedit-property-card--standard .nfedit-property-card__name { font-size: 1.25rem; }
+.nfedit-property-card--featured .nfedit-property-card__name { font-size: 1.5rem; }
+.nfedit-property-card--minimal  .nfedit-property-card__name { font-size: 1.125rem; }
+@media (min-width: 768px) {
+    .nfedit-property-card--standard .nfedit-property-card__name { font-size: 22px; }
+    .nfedit-property-card--featured .nfedit-property-card__name { font-size: 28px; }
+}
+.nfedit-property-card__oneliner {
+    font-family: var(--font-body);
+    font-style: italic;
+    font-size: 14px;
+    color: hsl(var(--ink-soft));
+    margin: 0.5rem 0 0 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+@media (min-width: 768px) {
+    .nfedit-property-card__oneliner { font-size: 15px; }
+}
+.nfedit-property-card__stats {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: hsl(var(--moss-light));
+    margin: 0.75rem 0 0 0;
+}

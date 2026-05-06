@@ -1,0 +1,128 @@
+/* ============================================================
+   The New Forest Edit — Design Tokens
+   Extracted verbatim from Lovable's src/index.css + tailwind.config.ts
+   Drop into: wp-content/themes/nfedit/assets/css/tokens.css
+   
+   This is the canonical source of brand truth. If the Lovable
+   prototype shows a colour, font weight, or spacing that ISN'T
+   in this file, it's a Tailwind utility — translate it here too.
+   ============================================================ */
+
+/* ----------------------------------------------------------------
+   Google Fonts
+   ---------------------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,400..700,0..100,0..1;1,9..144,400..700,0..100,0..1&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+  /* ----------------------------------------------------------------
+     Brand palette (HSL, matches Lovable index.css L13-27 verbatim)
+     Colours expressed as HSL components so CSS can compose with
+     hsl(var(--token) / <alpha>) syntax for opacity variants.
+     ---------------------------------------------------------------- */
+  --ink:           0   0%  10%;    /* #1A1A1A — primary text */
+  --ink-soft:      0   0%  17%;    /* #2C2C2C — secondary text */
+  --forest:        117 14% 20%;    /* #2D3B2C — primary brand, CTAs, footer bg */
+  --forest-light:  117 13% 26%;    /* #3A4A39 — hover state */
+  --moss:          88  14% 36%;    /* #5C6B4F — accent, eyebrow labels */
+  --moss-light:    88  13% 49%;    /* #7A8B6E — hover state */
+  --bone:          42  33% 94%;    /* #F5F2EC — PAGE BACKGROUND, never pure white */
+  --bone-warm:     38  33% 91%;    /* #EFEAE0 — alternating section bg */
+  --furze:         43  65% 53%;    /* #D4A93C — "Edit" italic accent */
+  --furze-soft:    42  70% 65%;    /* #E5C268 — sticky banner bg, hover */
+  --stone:         35  12% 61%;    /* #A89F92 — borders, dividers, captions */
+  --stone-light:   36  12% 75%;    /* #C8C2B7 — light borders */
+  --bracken:       27  53% 36%;    /* #8B5A2B — secondary accent, "may not love" dashes */
+
+  /* ----------------------------------------------------------------
+     Semantic aliases (used by shadcn-derived components and form fields)
+     ---------------------------------------------------------------- */
+  --background:           var(--bone);
+  --foreground:           var(--ink);
+  --card:                 var(--bone);
+  --card-foreground:      var(--ink);
+  --popover:              var(--bone);
+  --popover-foreground:   var(--ink);
+  --primary:              var(--forest);
+  --primary-foreground:   var(--bone);
+  --secondary:            var(--bone-warm);
+  --secondary-foreground: var(--ink);
+  --muted:                var(--bone-warm);
+  --muted-foreground:     var(--moss);
+  --accent:               var(--furze);
+  --accent-foreground:    var(--ink);
+  --destructive:          0 62% 38%;
+  --destructive-foreground: var(--bone);
+  --border:               var(--stone-light);
+  --input:                var(--stone-light);
+  --ring:                 var(--forest);
+  --radius:               0.125rem;  /* sharp corners — 2px max */
+
+  /* ----------------------------------------------------------------
+     Typography
+     ---------------------------------------------------------------- */
+  --font-display:         'Fraunces', Georgia, serif;
+  --font-body:            'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Type scale (mobile / desktop set via media queries on body) */
+  --fs-h1-hero-mobile:    2.5rem;     /* 40px */
+  --fs-h1-hero-desktop:   4rem;       /* 64px */
+  --fs-h1-page-mobile:    2rem;       /* 32px */
+  --fs-h1-page-desktop:   3rem;       /* 48px */
+  --fs-h2-mobile:         1.75rem;    /* 28px */
+  --fs-h2-desktop:        2.25rem;    /* 36px */
+  --fs-h3-mobile:         1.375rem;   /* 22px */
+  --fs-h3-desktop:        1.5rem;     /* 24px */
+  --fs-body-mobile:       1.0625rem;  /* 17px */
+  --fs-body-desktop:      1.125rem;   /* 18px */
+  --fs-small:             0.875rem;   /* 14px */
+  --fs-eyebrow:           0.75rem;    /* 12px */
+
+  /* Line heights */
+  --lh-tight:             1.15;
+  --lh-display:           1.2;
+  --lh-body:              1.7;        /* generous editorial body */
+
+  /* Tracking */
+  --tracking-tight:       -0.01em;    /* on display headings */
+  --tracking-eyebrow:     0.08em;     /* on uppercase eyebrow labels */
+
+  /* ----------------------------------------------------------------
+     Spacing — 8px baseline grid
+     ---------------------------------------------------------------- */
+  --space-1:              0.5rem;     /* 8px */
+  --space-2:              1rem;       /* 16px */
+  --space-3:              1.5rem;     /* 24px */
+  --space-4:              2rem;       /* 32px */
+  --space-5:              2.5rem;     /* 40px */
+  --space-6:              3rem;       /* 48px */
+  --space-8:              4rem;       /* 64px */
+  --space-12:             6rem;       /* 96px */
+  --space-16:             8rem;       /* 128px */
+
+  --section-pad-y-mobile:    3.5rem;
+  --section-pad-y-desktop:   6rem;
+
+  --container-max:           1240px;
+  --container-pad-mobile:    1.5rem;
+  --container-pad-desktop:   2rem;
+  --content-max:             680px;   /* editorial body */
+
+  /* ----------------------------------------------------------------
+     Z-index layers
+     ---------------------------------------------------------------- */
+  --z-banner:             40;
+  --z-header:             50;
+  --z-mobile-cta:         40;
+  --z-lightbox:           60;
+  --z-mobile-nav:         50;
+
+  /* ----------------------------------------------------------------
+     Motion
+     ---------------------------------------------------------------- */
+  --ease-out:             cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast:        200ms;
+  --duration-mid:         400ms;
+  --duration-slow:        600ms;
+}
+
+

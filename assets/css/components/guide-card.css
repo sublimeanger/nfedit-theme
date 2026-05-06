@@ -1,0 +1,29 @@
+.nfedit-guide-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+.nfedit-guide-card__media {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: hsl(var(--bone-warm));
+}
+.nfedit-guide-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.nfedit-guide-card__title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.25rem;
+    color: hsl(var(--ink));
+    margin: 1rem 0 0 0;
+    line-height: 1.2;
+}
+.nfedit-guide-card__dek {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: hsl(var(--ink-soft));
+    margin: 0.25rem 0 0 0;
+}
