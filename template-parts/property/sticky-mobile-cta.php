@@ -9,7 +9,7 @@ $post_id     = (int) $args['post_id'];
 $price       = (float) get_field('price_from', $post_id);
 $unit        = (string) get_field('price_unit', $post_id);
 $caveat      = (string) get_field('price_caveat', $post_id);
-$booking_url = (string) get_field('booking_url', $post_id);
+$booking_url = function_exists('nfedit_property_booking_url') ? (string) nfedit_property_booking_url($post_id) : (string) get_field('booking_url', $post_id);
 if (!$unit) $unit = 'night';
 if ($price <= 0 && !$booking_url) return;
 ?>

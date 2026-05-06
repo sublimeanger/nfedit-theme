@@ -133,4 +133,5 @@ require_once get_stylesheet_directory() . '/inc/feed-importer/scrapers/html-util
 require_once get_stylesheet_directory() . '/inc/feed-importer/scrapers/class-scraper-base.php';
 require_once get_stylesheet_directory() . '/inc/feed-importer/scrapers/class-scraper-shorefield.php';
 require_once get_stylesheet_directory() . '/inc/surround-helpers.php';
+require_once get_stylesheet_directory() . '/inc/awin-deeplink.php';
 require_once get_stylesheet_directory() . '/inc/feed-importer/fixture-cleanup.php';

@@ -7,7 +7,7 @@ defined('ABSPATH') || exit;
 
 $post_id     = (int) $args['post_id'];
 $merchant    = (string) get_field('merchant', $post_id);
-$booking_url = (string) get_field('booking_url', $post_id);
+$booking_url = function_exists('nfedit_property_booking_url') ? (string) nfedit_property_booking_url($post_id) : (string) get_field('booking_url', $post_id);
 $override    = (string) get_field('booking_cta_override_copy', $post_id);
 
 $merchant_label = $merchant ? $merchant : 'our partner';
