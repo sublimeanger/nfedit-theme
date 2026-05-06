@@ -1,4 +1,4 @@
-/* nfedit Header — sticky, transparent over hero variants */
+/* nfedit Header — sticky, persistent white bar across all pages */
 
 .nfedit-header {
     position: fixed;
@@ -14,19 +14,31 @@
     color: hsl(var(--ink));
     transition: height var(--duration-fast) ease,
                 background-color var(--duration-fast) ease,
-                color var(--duration-fast) ease;
+                color var(--duration-fast) ease,
+                top var(--duration-fast) ease;
 }
 
 .nfedit-header.is-scrolled {
     height: 64px;
 }
 
-.nfedit-header--over-hero:not(.is-scrolled) {
-    background: transparent;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    border-bottom-color: transparent;
-    color: hsl(var(--bone));
+/* WP admin bar offset — header sits below the toolbar when logged in */
+body.admin-bar .nfedit-header,
+body.admin-bar .nfedit-mobile-nav {
+    top: 32px;
+}
+@media (max-width: 782px) {
+    body.admin-bar .nfedit-header,
+    body.admin-bar .nfedit-mobile-nav {
+        top: 46px;
+    }
+}
+@media (max-width: 600px) {
+    /* WP collapses admin bar to a fixed top bar at this width — height stays 46px */
+    body.admin-bar .nfedit-header,
+    body.admin-bar .nfedit-mobile-nav {
+        top: 46px;
+    }
 }
 
 .nfedit-header__inner {
@@ -182,12 +194,8 @@
     text-decoration: none;
 }
 
-/* Push main content below fixed header */
+/* Push main content below fixed header (applies on every page now —
+ * the persistent white bar replaces the previous transparent-over-hero variant). */
 .nfedit-main {
     padding-top: 80px;
-}
-
-/* Hero pages have transparent header overlapping their hero — no top padding */
-body.nfedit-over-hero .nfedit-main {
-    padding-top: 0;
 }

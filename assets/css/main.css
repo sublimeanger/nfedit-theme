@@ -6,7 +6,7 @@
 @import url('./utilities.css');
 
 /* Components */
-@import url('./components/header.css');
+@import url('./components/header.css?v=12k');
 @import url('./components/footer.css');
 @import url('./components/newsletter.css');
 @import url('./components/breadcrumbs.css');
