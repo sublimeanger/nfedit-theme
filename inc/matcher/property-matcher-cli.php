@@ -62,6 +62,25 @@ try {
             echo "Exported {$count} review-needed rows to {$path}\n";
             break;
 
+        case 'disambiguate':
+            echo "=== Running disambiguation pass on existing matches ===\n";
+            $m->resolve_many_to_one();
+            $path = WP_CONTENT_DIR . '/uploads/property-matches-manual-review-v2.csv';
+            $count = $m->export_review_csv( $path );
+            echo "\nExported {$count} post-disambiguation review-needed rows to {$path}\n";
+            break;
+
+        case 'apply-review':
+            $csv_path = isset( $args[1] ) ? $args[1] : '';
+            if ( $csv_path === '' ) {
+                echo "ERROR: apply-review requires a CSV path as second argument\n";
+                echo "Usage: wp eval-file ...cli.php apply-review /path/to/decided.csv\n";
+                exit( 1 );
+            }
+            $result = $m->apply_review_decisions( $csv_path );
+            echo "Processed: {$result['processed']}, Skipped: {$result['skipped']}\n";
+            break;
+
         case 'run':
         default:
             $m->run();

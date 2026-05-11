@@ -41,6 +41,12 @@ class NFEdit_Property_Matcher {
         'matched_cottages_com'    => 0,
         'no_match'                => 0,
         'many_to_one_warnings'    => 0,
+        'disambig_winners_kept'   => 0,
+        'disambig_runners_demoted'=> 0,
+        'disambig_all_demoted_ambig' => 0,
+        'review_applied_snaptrip'    => 0,
+        'review_applied_cottages_com'=> 0,
+        'review_applied_no_match'    => 0,
     );
 
     public function __construct() {
@@ -248,6 +254,204 @@ class NFEdit_Property_Matcher {
         }
 
         $this->log( '=== MATCHER RUN DONE ===' );
+    }
+
+    /* ------------------------------------------------------------------
+     * Resolve many-to-one Snaptrip claims (disambiguation pass).
+     *
+     * For each Snaptrip ID claimed by 2+ cottages.com rows:
+     *   - If top claim's confidence >= AUTO_ROUTE_MIN: keep top, demote rest
+     *   - Else: demote ALL (cluster ambiguity with no clear winner)
+     *
+     * Demoted rows: snaptrip_listing_id = NULL, confidence = 0,
+     * auto_route = 'cottages_com', notes records the original claim.
+     * ------------------------------------------------------------------ */
+
+    public function resolve_many_to_one() {
+        global $wpdb;
+        $this->log( '=== DISAMBIGUATION PASS START ===' );
+
+        $dupes = $wpdb->get_col(
+            "SELECT snaptrip_listing_id
+             FROM " . self::TABLE_MATCHES . "
+             WHERE snaptrip_listing_id IS NOT NULL
+             GROUP BY snaptrip_listing_id
+             HAVING COUNT(*) > 1"
+        );
+        $this->log( 'Many-to-one Snaptrip IDs to resolve: ' . count( $dupes ) );
+
+        foreach ( $dupes as $snaptrip_id ) {
+            $claims = $wpdb->get_results( $wpdb->prepare(
+                "SELECT m.id, m.cottages_com_inventory_id, m.confidence, m.distance_meters,
+                        m.match_method, m.snaptrip_listing_id,
+                        c.title AS cottage_title
+                 FROM " . self::TABLE_MATCHES . " m
+                 JOIN " . self::TABLE_COTTAGES_COM . " c ON c.id = m.cottages_com_inventory_id
+                 WHERE m.snaptrip_listing_id = %d
+                 ORDER BY m.confidence DESC, m.distance_meters ASC, m.id ASC",
+                $snaptrip_id
+            ) );
+
+            if ( count( $claims ) < 2 ) {
+                continue;
+            }
+
+            $winner = $claims[0];
+
+            if ( (float) $winner->confidence >= self::AUTO_ROUTE_MIN ) {
+                $this->log( sprintf(
+                    'Snaptrip #%d: winner is %s (cottages.com #%d, conf=%s, dist=%sm) — demoting %d runners-up',
+                    $snaptrip_id, $winner->cottage_title, $winner->cottages_com_inventory_id,
+                    $winner->confidence, $winner->distance_meters, count( $claims ) - 1
+                ) );
+                $this->stats['disambig_winners_kept']++;
+                $losers = array_slice( $claims, 1 );
+                foreach ( $losers as $loser ) {
+                    $this->demote_match(
+                        $loser,
+                        'demoted_runner_up_to_match_' . $winner->id,
+                        sprintf(
+                            'Originally matched to snaptrip_id=%d at conf=%s, dist=%sm; demoted because match #%d (cottages.com #%d %s) at conf=%s won the same Snaptrip target.',
+                            $loser->snaptrip_listing_id, $loser->confidence, $loser->distance_meters,
+                            $winner->id, $winner->cottages_com_inventory_id, $winner->cottage_title, $winner->confidence
+                        )
+                    );
+                    $this->stats['disambig_runners_demoted']++;
+                }
+            } else {
+                $this->log( sprintf(
+                    'Snaptrip #%d: cluster ambiguity (top conf=%s < %s) — demoting all %d claimants',
+                    $snaptrip_id, $winner->confidence, self::AUTO_ROUTE_MIN, count( $claims )
+                ) );
+                foreach ( $claims as $claim ) {
+                    $this->demote_match(
+                        $claim,
+                        'demoted_cluster_ambiguity',
+                        sprintf(
+                            'Originally matched to snaptrip_id=%d at conf=%s, dist=%sm; demoted because Snaptrip target was contested by %d cottages.com rows with no clear winner (top conf < %s).',
+                            $claim->snaptrip_listing_id, $claim->confidence, $claim->distance_meters,
+                            count( $claims ), self::AUTO_ROUTE_MIN
+                        )
+                    );
+                    $this->stats['disambig_all_demoted_ambig']++;
+                }
+            }
+        }
+        $this->log( '=== DISAMBIGUATION PASS DONE ===' );
+    }
+
+    private function demote_match( $match_row, $new_method, $notes ) {
+        global $wpdb;
+        $wpdb->update(
+            self::TABLE_MATCHES,
+            array(
+                'snaptrip_listing_id' => null,
+                'confidence'          => 0,
+                'match_method'        => $new_method,
+                'auto_route'          => 'cottages_com',
+                'notes'               => $notes,
+            ),
+            array( 'id' => (int) $match_row->id )
+        );
+    }
+
+    /* ------------------------------------------------------------------
+     * Apply manual review decisions from a filled-in CSV
+     *
+     * CSV must have columns: match_id, decision
+     * decision values: S (approve Snaptrip), C (route via cottages.com),
+     *                  N (no match), blank (skip)
+     * ------------------------------------------------------------------ */
+
+    public function apply_review_decisions( $csv_path ) {
+        global $wpdb;
+        $this->log( '=== APPLY REVIEW DECISIONS START: ' . $csv_path . ' ===' );
+
+        if ( ! file_exists( $csv_path ) ) {
+            throw new RuntimeException( 'CSV file not found: ' . $csv_path );
+        }
+
+        $fh = fopen( $csv_path, 'r' );
+        $header = fgetcsv( $fh );
+        if ( ! $header ) {
+            fclose( $fh );
+            throw new RuntimeException( 'CSV header missing' );
+        }
+        $col = array_flip( $header );
+
+        $required = array( 'match_id', 'decision' );
+        foreach ( $required as $rc ) {
+            if ( ! isset( $col[ $rc ] ) ) {
+                fclose( $fh );
+                throw new RuntimeException( "Required CSV column missing: {$rc}" );
+            }
+        }
+
+        $processed = 0;
+        $skipped   = 0;
+        while ( ( $row = fgetcsv( $fh ) ) !== false ) {
+            $match_id = isset( $row[ $col['match_id'] ] ) ? (int) $row[ $col['match_id'] ] : 0;
+            $decision = isset( $row[ $col['decision'] ] ) ? strtoupper( trim( $row[ $col['decision'] ] ) ) : '';
+
+            if ( $match_id <= 0 ) { $skipped++; continue; }
+            if ( $decision === '' ) { $skipped++; continue; }
+            if ( ! in_array( $decision, array( 'S', 'C', 'N' ), true ) ) {
+                $this->log( "Match #{$match_id}: invalid decision '{$decision}', skipping" );
+                $skipped++;
+                continue;
+            }
+
+            $existing = $wpdb->get_row( $wpdb->prepare(
+                "SELECT id, snaptrip_listing_id, auto_route FROM " . self::TABLE_MATCHES . " WHERE id = %d",
+                $match_id
+            ) );
+            if ( ! $existing ) {
+                $this->log( "Match #{$match_id}: not found, skipping" );
+                $skipped++;
+                continue;
+            }
+
+            $now = current_time( 'mysql', 1 );
+
+            switch ( $decision ) {
+                case 'S':
+                    $wpdb->update( self::TABLE_MATCHES, array(
+                        'manual_decision' => 'approve_snaptrip',
+                        'auto_route'      => 'snaptrip',
+                        'decided_at'      => $now,
+                        'decided_by'      => 'jamie',
+                    ), array( 'id' => $match_id ) );
+                    $this->stats['review_applied_snaptrip']++;
+                    $this->log( "Match #{$match_id}: approved Snaptrip" );
+                    break;
+                case 'C':
+                    $wpdb->update( self::TABLE_MATCHES, array(
+                        'manual_decision' => 'approve_cottages_com',
+                        'auto_route'      => 'cottages_com',
+                        'decided_at'      => $now,
+                        'decided_by'      => 'jamie',
+                    ), array( 'id' => $match_id ) );
+                    $this->stats['review_applied_cottages_com']++;
+                    $this->log( "Match #{$match_id}: routed cottages.com (rejected Snaptrip pair)" );
+                    break;
+                case 'N':
+                    $wpdb->update( self::TABLE_MATCHES, array(
+                        'manual_decision'     => 'no_match',
+                        'auto_route'          => 'no_match',
+                        'snaptrip_listing_id' => null,
+                        'decided_at'          => $now,
+                        'decided_by'          => 'jamie',
+                    ), array( 'id' => $match_id ) );
+                    $this->stats['review_applied_no_match']++;
+                    $this->log( "Match #{$match_id}: marked no_match" );
+                    break;
+            }
+            $processed++;
+        }
+        fclose( $fh );
+
+        $this->log( sprintf( '=== APPLY REVIEW DONE: %d processed, %d skipped ===', $processed, $skipped ) );
+        return array( 'processed' => $processed, 'skipped' => $skipped );
     }
 
     public function export_review_csv( $path ) {
