@@ -26,6 +26,18 @@ class NFEdit_Cottages_Com_Feed {
         'SP5','SP6',
     );
 
+    /**
+     * NF geographic bounding box.
+     * The postcode-only filter let through Wiltshire / Salisbury / Mere / Cranborne-Chase
+     * properties that share an outward postcode with a Forest-edge district
+     * (e.g. SP5, SO51) but are geographically not New Forest.
+     * Confirmed bounds with Jamie 2026-05-11.
+     */
+    const NF_LAT_MAX = 51.00;
+    const NF_LAT_MIN = 50.65;
+    const NF_LNG_MIN = -1.91;
+    const NF_LNG_MAX = -1.30;
+
     const FEED_COLUMNS = array(
         'aw_deep_link',
         'product_name',
@@ -57,6 +69,7 @@ class NFEdit_Cottages_Com_Feed {
         'rows_matched_nf'       => 0,
         'rows_upserted'         => 0,
         'rows_skipped_no_id'    => 0,
+        'rows_outside_bounds'   => 0,
         'tier_T1'               => 0,
         'tier_T2'               => 0,
         'tier_below_bar'        => 0,
@@ -215,6 +228,18 @@ class NFEdit_Cottages_Com_Feed {
                 continue;
             }
             $this->stats['rows_matched_nf']++;
+
+            // NF geographic bounding-box veto (the postcode filter alone lets
+            // through Wiltshire / Salisbury / Mere properties that share an
+            // outward code with Forest-edge districts but aren't NF).
+            $lat_check = $this->to_decimal( $get( 'Travel:latitude' ) );
+            $lng_check = $this->to_decimal( $get( 'Travel:longitude' ) );
+            if ( $lat_check === null || $lng_check === null
+                 || $lat_check > self::NF_LAT_MAX || $lat_check < self::NF_LAT_MIN
+                 || $lng_check < self::NF_LNG_MIN || $lng_check > self::NF_LNG_MAX ) {
+                $this->stats['rows_outside_bounds']++;
+                continue;
+            }
 
             $mpid = $get( 'merchant_product_id' );
             if ( $mpid === '' ) {
