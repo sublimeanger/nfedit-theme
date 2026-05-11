@@ -10,7 +10,7 @@ $merchant    = (string) get_field('merchant', $post_id);
 $booking_url = function_exists('nfedit_property_booking_url') ? (string) nfedit_property_booking_url($post_id) : (string) get_field('booking_url', $post_id);
 $override    = (string) get_field('booking_cta_override_copy', $post_id);
 
-$merchant_label = $merchant ? $merchant : 'our partner';
+$merchant_label = $merchant ? nfedit_get_merchant_cta_label( $merchant ) : 'our partner';
 $default_copy = sprintf(
     "We don&rsquo;t take bookings directly &mdash; you&rsquo;ll book with %s at the best available price. Our affiliate link helps keep The Edit running, at no extra cost to you.",
     esc_html($merchant_label)

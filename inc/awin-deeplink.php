@@ -33,6 +33,42 @@ function nfedit_awin_get_mid($merchant_slug) {
 }
 
 /**
+ * Get the display label for a merchant slug, used by the CTA template.
+ *
+ * Resolution order:
+ *   1. cta_label column (if non-empty)
+ *   2. advertiser_name column
+ *   3. The bare slug (fallback — matches pre-Phase-13d behaviour)
+ *
+ * Only considers enabled = 1 rows. Returns empty string if slug is empty.
+ *
+ * @param string $merchant_slug
+ * @return string
+ */
+function nfedit_get_merchant_cta_label( $merchant_slug ) {
+    global $wpdb;
+    $merchant_slug = (string) $merchant_slug;
+    if ( $merchant_slug === '' ) {
+        return '';
+    }
+    $row = $wpdb->get_row( $wpdb->prepare(
+        "SELECT cta_label, advertiser_name FROM wp_nfedit_advertisers WHERE merchant_slug = %s AND enabled = 1 LIMIT 1",
+        $merchant_slug
+    ) );
+    if ( ! $row ) {
+        return $merchant_slug;
+    }
+    if ( ! empty( $row->cta_label ) ) {
+        return $row->cta_label;
+    }
+    if ( ! empty( $row->advertiser_name ) ) {
+        return $row->advertiser_name;
+    }
+    return $merchant_slug;
+}
+
+
+/**
  * Wrap a raw URL into an Awin deeplink.
  */
 function nfedit_awin_wrap_url($raw_url, $merchant_slug, $clickref = 'nfedit') {
