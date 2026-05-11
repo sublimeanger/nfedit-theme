@@ -44,6 +44,7 @@ class NFEdit_Property_Matcher {
         'disambig_winners_kept'   => 0,
         'disambig_runners_demoted'=> 0,
         'disambig_all_demoted_ambig' => 0,
+        'disambig_winners_promoted_via_name' => 0,
         'review_applied_snaptrip'    => 0,
         'review_applied_cottages_com'=> 0,
         'review_applied_no_match'    => 0,
@@ -257,6 +258,61 @@ class NFEdit_Property_Matcher {
     }
 
     /* ------------------------------------------------------------------
+     * Name-similarity helpers (used during disambiguation)
+     * ------------------------------------------------------------------ */
+
+    /**
+     * Extract significant tokens from a property title.
+     * Lowercase, split on non-alphanumeric, length >= 4, not in stop list.
+     */
+    private function extract_significant_tokens( $title ) {
+        static $stop_words = array(
+            // Property type words
+            'cottage','cottages','house','houses','lodge','lodges','cabin','cabins',
+            'barn','barns','retreat','retreats','hut','huts','suite','suites',
+            'apartment','apartments','annexe','annex','annexes','room','rooms',
+            'studio','studios','farm','farmhouse',
+            // Articles, prepositions
+            'the','and','near','with','for','from','through',
+            // Property descriptors
+            'holiday','holidays','self','catering','pet','dog','friendly','bed',
+            'beds','bedroom','bedrooms',
+            // NF site context (everything is New Forest here)
+            'forest','new',
+            // NF town names (so anonymized titles like "1 Bed Cottage in Lymington"
+            // yield zero distinctive tokens)
+            'lymington','brockenhurst','lyndhurst','beaulieu','ringwood','burley',
+            'fordingbridge','christchurch','bransgore','milton','milford','hordle',
+            'boldre','sway','hythe','totton','cadnam','verwood','romsey','salisbury',
+            'hampshire','dorset','england',
+        );
+
+        $title = strtolower( (string) $title );
+        $parts = preg_split( '/[^a-z0-9]+/', $title );
+        $out = array();
+        foreach ( $parts as $t ) {
+            if ( $t === '' ) continue;
+            if ( strlen( $t ) < 4 ) continue;
+            if ( in_array( $t, $stop_words, true ) ) continue;
+            $out[] = $t;
+        }
+        return array_values( array_unique( $out ) );
+    }
+
+    /**
+     * Compute name match between two titles.
+     * Returns 1 if any distinctive token appears in both, else 0.
+     */
+    public function compute_name_match( $title_a, $title_b ) {
+        $a = $this->extract_significant_tokens( $title_a );
+        $b = $this->extract_significant_tokens( $title_b );
+        if ( empty( $a ) || empty( $b ) ) {
+            return 0;
+        }
+        return count( array_intersect( $a, $b ) ) > 0 ? 1 : 0;
+    }
+
+    /* ------------------------------------------------------------------
      * Resolve many-to-one Snaptrip claims (disambiguation pass).
      *
      * For each Snaptrip ID claimed by 2+ cottages.com rows:
@@ -269,7 +325,7 @@ class NFEdit_Property_Matcher {
 
     public function resolve_many_to_one() {
         global $wpdb;
-        $this->log( '=== DISAMBIGUATION PASS START ===' );
+        $this->log( '=== DISAMBIGUATION PASS START (name-aware) ===' );
 
         $dupes = $wpdb->get_col(
             "SELECT snaptrip_listing_id
@@ -281,14 +337,19 @@ class NFEdit_Property_Matcher {
         $this->log( 'Many-to-one Snaptrip IDs to resolve: ' . count( $dupes ) );
 
         foreach ( $dupes as $snaptrip_id ) {
+            $snaptrip = $wpdb->get_row( $wpdb->prepare(
+                "SELECT title FROM " . self::TABLE_SNAPTRIP . " WHERE id = %d",
+                $snaptrip_id
+            ) );
+            $snaptrip_title = $snaptrip ? $snaptrip->title : '';
+
             $claims = $wpdb->get_results( $wpdb->prepare(
                 "SELECT m.id, m.cottages_com_inventory_id, m.confidence, m.distance_meters,
                         m.match_method, m.snaptrip_listing_id,
                         c.title AS cottage_title
                  FROM " . self::TABLE_MATCHES . " m
                  JOIN " . self::TABLE_COTTAGES_COM . " c ON c.id = m.cottages_com_inventory_id
-                 WHERE m.snaptrip_listing_id = %d
-                 ORDER BY m.confidence DESC, m.distance_meters ASC, m.id ASC",
+                 WHERE m.snaptrip_listing_id = %d",
                 $snaptrip_id
             ) );
 
@@ -296,13 +357,39 @@ class NFEdit_Property_Matcher {
                 continue;
             }
 
+            // Compute name_match for each claim against the Snaptrip title
+            foreach ( $claims as $claim ) {
+                $claim->name_match = $this->compute_name_match( $claim->cottage_title, $snaptrip_title );
+            }
+
+            // Sort: name_match DESC, confidence DESC, distance ASC, id ASC
+            usort( $claims, function( $a, $b ) {
+                if ( $a->name_match !== $b->name_match ) {
+                    return $b->name_match <=> $a->name_match;
+                }
+                if ( (float) $a->confidence !== (float) $b->confidence ) {
+                    return ( (float) $b->confidence ) <=> ( (float) $a->confidence );
+                }
+                if ( (float) $a->distance_meters !== (float) $b->distance_meters ) {
+                    return ( (float) $a->distance_meters ) <=> ( (float) $b->distance_meters );
+                }
+                return $a->id <=> $b->id;
+            } );
+
             $winner = $claims[0];
 
-            if ( (float) $winner->confidence >= self::AUTO_ROUTE_MIN ) {
+            // Keep winner if (conf >= AUTO_ROUTE_MIN) OR (name_match == 1)
+            // Strong name signal overrides the conf-only floor.
+            $keep_winner = ( (float) $winner->confidence >= self::AUTO_ROUTE_MIN )
+                        || ( (int) $winner->name_match === 1 );
+
+            if ( $keep_winner ) {
                 $this->log( sprintf(
-                    'Snaptrip #%d: winner is %s (cottages.com #%d, conf=%s, dist=%sm) — demoting %d runners-up',
-                    $snaptrip_id, $winner->cottage_title, $winner->cottages_com_inventory_id,
-                    $winner->confidence, $winner->distance_meters, count( $claims ) - 1
+                    'Snaptrip #%d ("%s"): winner is "%s" (cc #%d, conf=%s, dist=%sm, name_match=%d) — demoting %d runners-up',
+                    $snaptrip_id, $snaptrip_title, $winner->cottage_title,
+                    $winner->cottages_com_inventory_id, $winner->confidence,
+                    $winner->distance_meters, $winner->name_match,
+                    count( $claims ) - 1
                 ) );
                 $this->stats['disambig_winners_kept']++;
                 $losers = array_slice( $claims, 1 );
@@ -311,26 +398,55 @@ class NFEdit_Property_Matcher {
                         $loser,
                         'demoted_runner_up_to_match_' . $winner->id,
                         sprintf(
-                            'Originally matched to snaptrip_id=%d at conf=%s, dist=%sm; demoted because match #%d (cottages.com #%d %s) at conf=%s won the same Snaptrip target.',
-                            $loser->snaptrip_listing_id, $loser->confidence, $loser->distance_meters,
-                            $winner->id, $winner->cottages_com_inventory_id, $winner->cottage_title, $winner->confidence
+                            'Originally matched to snaptrip_id=%d ("%s") at conf=%s, dist=%sm, name_match=%d; demoted because match #%d (cc #%d "%s") at conf=%s, name_match=%d won the same Snaptrip target.',
+                            $loser->snaptrip_listing_id, $snaptrip_title,
+                            $loser->confidence, $loser->distance_meters, $loser->name_match,
+                            $winner->id, $winner->cottages_com_inventory_id,
+                            $winner->cottage_title, $winner->confidence, $winner->name_match
                         )
                     );
                     $this->stats['disambig_runners_demoted']++;
                 }
+
+                // Promote winner's auto_route to 'snaptrip' when it was kept via
+                // name_match but its score-derived confidence is below the
+                // AUTO_ROUTE_MIN floor. Otherwise the disambig pass would
+                // declare a winner whose actual routing decision still pointed
+                // at cottages.com.
+                if ( (float) $winner->confidence < self::AUTO_ROUTE_MIN ) {
+                    $wpdb->update(
+                        self::TABLE_MATCHES,
+                        array(
+                            'auto_route' => 'snaptrip',
+                            'notes'      => sprintf(
+                                'Promoted via disambig name_match signal. Original conf=%s (below AUTO_ROUTE_MIN=%s), name_match=1 on snaptrip_title="%s". Outcompeted %d runner(s).',
+                                $winner->confidence, self::AUTO_ROUTE_MIN, $snaptrip_title, count( $claims ) - 1
+                            ),
+                        ),
+                        array( 'id' => (int) $winner->id )
+                    );
+                    $this->stats['disambig_winners_promoted_via_name']++;
+                    $this->log( sprintf(
+                        'Snaptrip #%d: winner "%s" auto_route promoted to snaptrip via name_match (original conf=%s below AUTO_ROUTE_MIN=%s)',
+                        $snaptrip_id, $winner->cottage_title,
+                        $winner->confidence, self::AUTO_ROUTE_MIN
+                    ) );
+                }
             } else {
                 $this->log( sprintf(
-                    'Snaptrip #%d: cluster ambiguity (top conf=%s < %s) — demoting all %d claimants',
-                    $snaptrip_id, $winner->confidence, self::AUTO_ROUTE_MIN, count( $claims )
+                    'Snaptrip #%d ("%s"): cluster ambiguity (top conf=%s, name_match=%d — neither threshold met) — demoting all %d claimants',
+                    $snaptrip_id, $snaptrip_title, $winner->confidence,
+                    $winner->name_match, count( $claims )
                 ) );
                 foreach ( $claims as $claim ) {
                     $this->demote_match(
                         $claim,
                         'demoted_cluster_ambiguity',
                         sprintf(
-                            'Originally matched to snaptrip_id=%d at conf=%s, dist=%sm; demoted because Snaptrip target was contested by %d cottages.com rows with no clear winner (top conf < %s).',
-                            $claim->snaptrip_listing_id, $claim->confidence, $claim->distance_meters,
-                            count( $claims ), self::AUTO_ROUTE_MIN
+                            'Originally matched to snaptrip_id=%d ("%s") at conf=%s, dist=%sm, name_match=%d; demoted because cluster had no claim hitting conf>=%s and no claim with name_match=1.',
+                            $claim->snaptrip_listing_id, $snaptrip_title,
+                            $claim->confidence, $claim->distance_meters, $claim->name_match,
+                            self::AUTO_ROUTE_MIN
                         )
                     );
                     $this->stats['disambig_all_demoted_ambig']++;
